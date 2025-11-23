@@ -22,7 +22,7 @@ export default function InputForm(){
     <div>
       <div className="grid grid-cols-1 gap-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
+          <div className="bg-white p-4 shadow-md border border-slate-100" style={{ borderRadius: '5px' }}>
           <div className="text-sm font-semibold mb-2">Project Parameters</div>
           <div className="grid grid-cols-1 gap-4">
             <NumberInput label="Capacity Factor (decimal)" value={inputs.capacityFactor} step={0.01} onChange={v => setInput('capacityFactor', v)} />
@@ -38,7 +38,7 @@ export default function InputForm(){
           </div>
           </div>
 
-          <div>
+          <div className="bg-white p-4 shadow-md border border-slate-100" style={{ borderRadius: '5px' }}>
           <div className="text-sm font-semibold mb-2">Capital Expenditure (CAPEX)</div>
           <div className="grid grid-cols-1 gap-4">
             <NumberInput label="Turbines & Transformer" value={inputs.capexTurbinesTransformer} step={1} onChange={v => setInput('capexTurbinesTransformer', Math.max(0, Math.round(v)))} />
@@ -48,7 +48,7 @@ export default function InputForm(){
           </div>
           </div>
 
-          <div>
+          <div className="bg-white p-4 shadow-md border border-slate-100" style={{ borderRadius: '5px' }}>
           <div className="text-sm font-semibold mb-2">Operational Expenditure (OPEX)</div>
           <div className="grid grid-cols-1 gap-4">
             <NumberInput label="Repairs & Maintenance (pct of capex, decimal)" value={inputs.repairsPct} step={0.001} onChange={v => setInput('repairsPct', v)} />
@@ -58,7 +58,7 @@ export default function InputForm(){
           </div>
           </div>
 
-          <div>
+          <div className="bg-white p-4 shadow-md border border-slate-100" style={{ borderRadius: '5px' }}>
           <div className="text-sm font-semibold mb-2">Financial Structure</div>
           <div className="grid grid-cols-1 gap-4">
             <NumberInput label="Debt Ratio (decimal)" value={inputs.debtRatio} step={0.01} onChange={v => setInput('debtRatio', v)} />
