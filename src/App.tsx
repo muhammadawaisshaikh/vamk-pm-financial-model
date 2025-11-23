@@ -13,7 +13,7 @@ export default function App() {
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/VAMK_logo.png/500px-VAMK_logo.png"
                 alt="VAMK (Vaasa University of Applied Sciences)"
-                className="w-14 h-14"
+                className="w-24 h-auto"
               />
               <div>
                 <h1 className="text-2xl font-semibold">VAMK PM Financial Model</h1>
