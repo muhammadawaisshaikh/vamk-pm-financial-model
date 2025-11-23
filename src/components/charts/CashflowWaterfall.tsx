@@ -33,7 +33,15 @@ export default function CashflowWaterfall({ results }: { results: FinancialResul
     line.strokes.template.setAll({ strokeWidth: 2 })
 
     const legend = chart.children.push(am5.Legend.new(root, {}))
-    legend.data.setAll([series, line] as any)
+    // place legend below and add padding so it won't overlap the columns
+    legend.set('y', am5.percent(100))
+    legend.set('centerX', am5.percent(50))
+    legend.set('x', am5.percent(50))
+    chart.set('paddingBottom', 70)
+    try { legend.data.setAll([series, line] as any) } catch (e) {}
+
+    // hide x axis labels where they might be cramped in narrow layouts
+    try { xRenderer.labels.template.set('visible', true) } catch (e) {}
 
     chart.appear()
 

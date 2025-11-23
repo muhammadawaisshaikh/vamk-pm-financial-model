@@ -41,7 +41,16 @@ export default function OpexStacked({ results }: { results: FinancialResults }){
     seriesRefs.current.management = makeStackCol('management', 'Management')
 
     const legend = chart.children.push(am5.Legend.new(root, {}))
+    // place legend below chart and add padding to avoid overlap
+    legend.set('y', am5.percent(100))
+    legend.set('centerX', am5.percent(50))
+    legend.set('x', am5.percent(50))
+    chart.set('paddingBottom', 70)
     legend.data.setAll([revenueLine, ...Object.values(seriesRefs.current).filter(Boolean) as any])
+
+    // hide internal labels/ticks that can overlay when space is tight
+    try { (xAxis.get('renderer') as any).labels.template.set('visible', true) } catch (e) {}
+    try { (yAxis.get('renderer') as any).labels.template.set('visible', true) } catch (e) {}
 
     chart.appear()
 

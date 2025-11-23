@@ -53,8 +53,13 @@ export default function MetricsChart({ results }: Props) {
       // leave names short for legend
       // Note: these map to rows 'EBIT' and 'Net Income'
 
-    const legend = chart.children.push(am5.Legend.new(root, {}))
-    legend.data.setAll(Object.values(seriesRefs.current).filter(Boolean) as any)
+      const legend = chart.children.push(am5.Legend.new(root, {}))
+      // place legend below chart and add padding to avoid overlap
+      legend.set('y', am5.percent(100))
+      legend.set('centerX', am5.percent(50))
+      legend.set('x', am5.percent(50))
+      chart.set('paddingBottom', 60)
+      legend.data.setAll(Object.values(seriesRefs.current).filter(Boolean) as any)
 
     return () => {
       try { root.dispose() } catch (e) {}

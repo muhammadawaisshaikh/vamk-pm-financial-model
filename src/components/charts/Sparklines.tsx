@@ -21,6 +21,12 @@ const TinyLine = ({ containerRef, dataKey, label, results }: { containerRef: Rea
     const xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, { categoryField: 'year', renderer: am5xy.AxisRendererX.new(root, {}) }))
     const yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, { renderer: am5xy.AxisRendererY.new(root, {}) }))
 
+    // For tiny sparkline charts hide axis labels and ticks to avoid overlap
+    try { (xAxis.get('renderer') as any).labels.template.set('visible', false) } catch (e) {}
+    try { (xAxis.get('renderer') as any).ticks.template.set('visible', false) } catch (e) {}
+    try { (yAxis.get('renderer') as any).labels.template.set('visible', false) } catch (e) {}
+    try { (yAxis.get('renderer') as any).ticks.template.set('visible', false) } catch (e) {}
+
     const series = chart.series.push(am5xy.LineSeries.new(root, { name: label, xAxis, yAxis, valueYField: 'v', categoryXField: 'year' }))
     series.strokes.template.setAll({ strokeWidth: 2 })
 

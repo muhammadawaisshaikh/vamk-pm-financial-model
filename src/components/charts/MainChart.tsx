@@ -82,6 +82,11 @@ export default function MainChart({ results }: Props) {
     seriesRefs.current.netIncome = makeLine('netIncome', 'Net Income')
 
     const legend = chart.children.push(am5.Legend.new(root, {}))
+    // place legend below the chart to avoid overlapping labels
+    legend.set('y', am5.percent(100))
+    legend.set('centerX', am5.percent(50))
+    legend.set('x', am5.percent(50))
+    chart.set('paddingBottom', 60)
     legend.data.setAll(Object.values(seriesRefs.current).filter(Boolean) as any)
 
     chart.appear()

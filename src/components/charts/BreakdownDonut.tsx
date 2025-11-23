@@ -8,6 +8,8 @@ export default function BreakdownDonut(){
   const divRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<am5.Root | null>(null)
   const chartRef = useRef<am5percent.PieChart | null>(null)
+  const seriesRef = useRef<any>(null)
+  const legendRef = useRef<am5.Legend | null>(null)
 
   const inputs = useFinanceStore(s => s.inputs)
 
@@ -28,10 +30,15 @@ export default function BreakdownDonut(){
       alignLabels: false,
       legendLabelText: '{category}: {value.formatNumber(#,###)}',
     }))
+    seriesRef.current = series
     series.labels.template.set('visible', false)
     series.ticks.template.set('visible', false)
 
+    // create legend below the chart and keep a ref to it for safe updates
     const legend = chart.children.push(am5.Legend.new(root, {centerX: am5.percent(50), x: am5.percent(50)}))
+    legend.set('y', am5.percent(100))
+    chart.set('paddingBottom', 70)
+    legendRef.current = legend
 
     chart.appear()
 
@@ -50,15 +57,24 @@ export default function BreakdownDonut(){
       { category: 'Internal Cables & Grid', value: inputs.capexInternalCables },
       { category: 'Permits/Legal/Financing', value: inputs.capexPermitsLegalFinancing },
     ]
-    const series = chartRef.current.series.getIndex(0) as any
+    const series = seriesRef.current || chartRef.current.series.getIndex(0)
     if (series && series.data && typeof series.data.setAll === 'function') {
-      series.data.setAll(data as any)
+      try {
+        series.data.setAll(data as any)
+      } catch (e) {
+        // guard against amcharts runtime errors
+      }
 
-      // try to find legend child and update its data safely
-      const children: any[] = (chartRef.current.children && (chartRef.current.children as any).values) || []
-      const legend = children.find(c => c && typeof c.data !== 'undefined' && typeof c.data.setAll === 'function')
-      if (legend && legend.data && typeof legend.data.setAll === 'function') {
-        legend.data.setAll(series.dataItems)
+      // update legend data using stored legend ref for reliability
+      const legend = legendRef.current
+      try {
+        if (legend && legend.data && typeof legend.data.setAll === 'function') {
+          // prefer series.dataItems when available
+          const items = (series.dataItems && series.dataItems.length) ? series.dataItems : series.data
+          legend.data.setAll(items)
+        }
+      } catch (e) {
+        // silent guard - avoid bubbling runtime chart errors
       }
     }
   }, [inputs])
