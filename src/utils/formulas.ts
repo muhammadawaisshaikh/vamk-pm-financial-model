@@ -42,6 +42,9 @@ export type FinancialResults = {
   npv: number
   irr: number
   cumulativeEquityCashFlow: number
+  perYearNpv: number[]
+  perYearIrr: number[]
+  perYearCumulativeEquity: number[]
 }
 
 export function npv(rate: number, cashFlows: number[]) {
@@ -189,6 +192,23 @@ export function computeFinancialModel(inputs: FinancialInputs): FinancialResults
 
   const cumulativeEquityCashFlow = equityCashFlows.reduce((s, v) => s + v, 0)
 
+  // compute per-year NPV, IRR and cumulative equity
+  const perYearNpv: number[] = []
+  const perYearIrr: number[] = []
+  const perYearCumulativeEquity: number[] = []
+  let runningCum = 0
+  // equityCashFlows[0] is t=0 (initial equity outflow), then years 1..n
+  for (let k = 1; k <= years; k++) {
+    const slice = equityCashFlows.slice(0, k + 1) // include t=0..k
+    perYearNpv.push(npv(inputs.discountRate, slice))
+    const irrVal = irr(slice, 0.1)
+    perYearIrr.push(isFinite(irrVal) ? irrVal : NaN)
+    // cumulative equity up to year k
+    runningCum += slice[slice.length - 1]
+    // Note: runningCum equals sum of equityCashFlows[0..k]
+    perYearCumulativeEquity.push(equityCashFlows.slice(0, k + 1).reduce((s, v) => s + v, 0))
+  }
+
   const rows: YearlyRow[] = labels.map(l => ({ label: l, values: rowsMap[l] }))
 
   return {
@@ -196,5 +216,8 @@ export function computeFinancialModel(inputs: FinancialInputs): FinancialResults
     npv: computedNpv,
     irr: computedIrr,
     cumulativeEquityCashFlow,
+    perYearNpv,
+    perYearIrr,
+    perYearCumulativeEquity,
   }
 }
