@@ -10,16 +10,16 @@ export default function ResultsTable(){
   return (
     <div className="overflow-x-auto">
       <div className="mb-4 grid grid-cols-3 gap-4">
-        <div className="p-3 bg-slate-50 rounded">
-          <div className="text-xs text-slate-500">NPV (Equity)</div>
+        <div className="p-3 bg-slate-200 rounded">
+          <div className="text-xs text-slate-700">NPV (Equity)</div>
           <div className="text-lg font-medium">{results.npv.toFixed(2)}</div>
         </div>
-        <div className="p-3 bg-slate-50 rounded">
-          <div className="text-xs text-slate-500">IRR (Equity)</div>
+        <div className="p-3 bg-slate-200 rounded">
+          <div className="text-xs text-slate-700">IRR (Equity)</div>
           <div className="text-lg font-medium">{(results.irr*100).toFixed(2)}%</div>
         </div>
-        <div className="p-3 bg-slate-50 rounded">
-          <div className="text-xs text-slate-500">Cumulative Equity CF</div>
+        <div className="p-3 bg-slate-200 rounded">
+          <div className="text-xs text-slate-700">Cumulative Equity CF</div>
           <div className="text-lg font-medium">{results.cumulativeEquityCashFlow.toFixed(2)}</div>
         </div>
       </div>

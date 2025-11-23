@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useRef, useEffect } from 'react'
 import * as am5 from '@amcharts/amcharts5'
 import * as am5xy from '@amcharts/amcharts5/xy'
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated'
-import { FinancialResults } from '../../utils/formulas'
+import type { FinancialResults } from '../../utils/formulas'
 
 type Props = { results: FinancialResults }
 
@@ -10,7 +10,7 @@ export default function MetricsChart({ results }: Props) {
   const divRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<am5.Root | null>(null)
   const chartRef = useRef<am5xy.XYChart | null>(null)
-  const seriesRefs = useRef<Record<string, am5xy.Series | null>>({})
+  const seriesRefs = useRef<Record<string, am5xy.XYSeries | null>>({})
 
   useLayoutEffect(() => {
     if (!divRef.current) return
@@ -52,9 +52,7 @@ export default function MetricsChart({ results }: Props) {
     legend.data.setAll(Object.values(seriesRefs.current).filter(Boolean) as any)
 
     return () => {
-      try {
-        root.dispose()
-      } catch (e) {}
+      try { root.dispose() } catch (e) {}
       rootRef.current = null
       chartRef.current = null
       seriesRefs.current = {}

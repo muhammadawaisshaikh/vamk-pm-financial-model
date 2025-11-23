@@ -12,20 +12,22 @@ export default function App() {
           <p className="text-sm text-slate-600">Interactive financial model with real-time calculations and charts</p>
         </header>
 
-        <main className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <section className="lg:col-span-1">
+        <main className="space-y-6">
+          <section>
             <div className="bg-white p-4 rounded shadow">
               <h2 className="font-medium mb-3">Inputs</h2>
               <InputForm />
             </div>
           </section>
 
-          <section className="lg:col-span-2 space-y-6">
+          <section>
             <div className="bg-white p-4 rounded shadow">
               <h2 className="font-medium mb-3">Results</h2>
               <ResultsTable />
             </div>
+          </section>
 
+          <section>
             <div className="bg-white p-4 rounded shadow">
               <h2 className="font-medium mb-3">Charts</h2>
               <ChartsView />
