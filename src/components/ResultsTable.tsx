@@ -26,17 +26,17 @@ export default function ResultsTable(){
 
       <table className="min-w-full divide-y divide-slate-200 table-auto">
         <thead>
-          <tr>
-            <th className="px-3 py-2 text-left text-xs font-medium text-slate-600">Label</th>
+          <tr className="bg-orange-600">
+            <th className="px-3 py-3 text-left text-xs font-semibold text-white">Label</th>
             {Array.from({length: years}).map((_, i) => (
-              <th key={i} className="px-3 py-2 text-right text-xs font-medium text-slate-600">Year {i+1}</th>
+              <th key={i} className="px-3 py-3 text-right text-xs font-semibold text-white border-l border-orange-500">Year {i+1}</th>
             ))}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-slate-100">
           {results.rows.map(row => (
             <tr key={row.label}>
-              <td className="px-3 py-2 text-sm text-slate-700">{row.label}</td>
+              <td className="px-3 py-2 text-sm font-medium text-white bg-orange-600">{row.label}</td>
               {row.values.map((v, i) => (
                 <td key={i} className="px-3 py-2 text-sm text-right text-slate-700">{typeof v === 'number' && isFinite(v) ? v.toFixed(2) : String(v)}</td>
               ))}
