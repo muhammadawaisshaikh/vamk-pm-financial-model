@@ -32,7 +32,6 @@ export default function BreakdownDonut(){
     series.ticks.template.set('visible', false)
 
     const legend = chart.children.push(am5.Legend.new(root, {centerX: am5.percent(50), x: am5.percent(50)}))
-    legend.layout.set('width', am5.percent(100))
 
     chart.appear()
 
@@ -51,10 +50,17 @@ export default function BreakdownDonut(){
       { category: 'Internal Cables & Grid', value: inputs.capexInternalCables },
       { category: 'Permits/Legal/Financing', value: inputs.capexPermitsLegalFinancing },
     ]
-    const series = chartRef.current.series.getIndex(0)
-    series.data.setAll(data as any)
-    const legend = chartRef.current.children.getIndex(0) as any
-    if (legend) legend.data.setAll(series.dataItems)
+    const series = chartRef.current.series.getIndex(0) as any
+    if (series && series.data && typeof series.data.setAll === 'function') {
+      series.data.setAll(data as any)
+
+      // try to find legend child and update its data safely
+      const children: any[] = (chartRef.current.children && (chartRef.current.children as any).values) || []
+      const legend = children.find(c => c && typeof c.data !== 'undefined' && typeof c.data.setAll === 'function')
+      if (legend && legend.data && typeof legend.data.setAll === 'function') {
+        legend.data.setAll(series.dataItems)
+      }
+    }
   }, [inputs])
 
   return <div ref={divRef} style={{ width: '100%', height: '320px' }} />

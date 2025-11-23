@@ -76,6 +76,11 @@ export default function MainChart({ results }: Props) {
     seriesRefs.current.principal = makeColumn('principal', 'Principal Repayment')
     seriesRefs.current.cumulative = makeLine('cumulative', 'Cumulative Free Cash')
 
+    // add EBIT, EBT and Net Income as lines for clarity
+    seriesRefs.current.ebit = makeLine('ebit', 'EBIT')
+    seriesRefs.current.ebt = makeLine('ebt', 'EBT')
+    seriesRefs.current.netIncome = makeLine('netIncome', 'Net Income')
+
     const legend = chart.children.push(am5.Legend.new(root, {}))
     legend.data.setAll(Object.values(seriesRefs.current).filter(Boolean) as any)
 
@@ -101,6 +106,9 @@ export default function MainChart({ results }: Props) {
     const revenueRow = results.rows.find(r => r.label === 'Revenue')
     const cfadsRow = results.rows.find(r => r.label === 'CFADS')
     const interestRow = results.rows.find(r => r.label === 'Interest Expense')
+    const ebitRow = results.rows.find(r => r.label === 'EBIT')
+    const ebtRow = results.rows.find(r => r.label === 'EBT')
+    const netIncomeRow = results.rows.find(r => r.label === 'Net Income')
 
     const free = freeCashRow ? freeCashRow.values : []
     const principal = principalRow ? principalRow.values : []
@@ -108,7 +116,7 @@ export default function MainChart({ results }: Props) {
     const cfads = cfadsRow ? cfadsRow.values : []
     const interest = interestRow ? interestRow.values : []
 
-    const n = Math.max(free.length, principal.length, revenue.length, cfads.length, interest.length)
+    const n = Math.max(free.length, principal.length, revenue.length, cfads.length, interest.length, ebitRow?.values.length ?? 0, ebtRow?.values.length ?? 0, netIncomeRow?.values.length ?? 0)
     const data: Array<Record<string, any>> = []
     let cum = 0
     for (let i = 0; i < n; i++) {
@@ -117,8 +125,11 @@ export default function MainChart({ results }: Props) {
       const r = revenue[i] ?? 0
       const c = cfads[i] ?? 0
       const it = interest[i] ?? 0
+      const ebit = ebitRow?.values[i] ?? 0
+      const ebt = ebtRow?.values[i] ?? 0
+      const netInc = netIncomeRow?.values[i] ?? 0
       cum += f
-      data.push({ year: `Y${i + 1}`, revenue: r, cfads: c, interest: it, freeCash: f, principal: p, cumulative: cum })
+      data.push({ year: `Y${i + 1}`, revenue: r, cfads: c, interest: it, freeCash: f, principal: p, cumulative: cum, ebit, ebt, netIncome: netInc })
     }
 
     const xAxis = chartRef.current.xAxes.getIndex(0)

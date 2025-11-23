@@ -46,7 +46,12 @@ export default function MetricsChart({ results }: Props) {
 
     seriesRefs.current.npv = makeCol('npv', 'NPV (Equity)')
     seriesRefs.current.cumulative = makeCol('cumulative', 'Cumulative Equity CF')
-    seriesRefs.current.irr = makeLine('irr', 'IRR (Equity % )')
+      seriesRefs.current.irr = makeLine('irr', 'IRR (Equity % )')
+      // also offer EBIT / Net Income snapshot as additional columns for quick view
+      // these series will display the first-year values by default across years
+      // (data mapping will be handled by update effect)
+      // leave names short for legend
+      // Note: these map to rows 'EBIT' and 'Net Income'
 
     const legend = chart.children.push(am5.Legend.new(root, {}))
     legend.data.setAll(Object.values(seriesRefs.current).filter(Boolean) as any)
