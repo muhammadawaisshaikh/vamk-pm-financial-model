@@ -63,6 +63,10 @@ export default function App() {
             </div>
           </section>
         </main>
+
+        <footer className="mt-8 pt-6 border-t border-slate-200 text-center text-slate-500 text-sm">
+          <p>© {new Date().getFullYear()} VAMK PM Financial Model. Educational Project – Not for commercial use.</p>
+        </footer>
       </div>
     </div>
   )
